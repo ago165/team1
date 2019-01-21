@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="admin"> <!-- 테이블명 사용 -->
+  <!-- 등록 -->
+  <insert id="create" parameterType="AdminVO">
+    INSERT INTO
+    admin(adminno, id, passwd, auth, act, mdate, tel, name)
+    VALUES((SELECT NVL(MAX(adminno), 0)+1 as adminno FROM admin),
+    #{adminno}, #{id}, #{passwd}, #{auth}, #{act}, sysdate, #{tel}, #{name})
+  </insert>
+  
+  <!-- 목록 -->
+  <select id="list" resultType="AdminVO">
+    SELECT adminno, id, passwd, auth, act, mdate, tel, name
+    FROM admin
+    ORDER BY id ASC
+  </select>
+  
+  <select id="read" resultType="AdminVO" parameterType="int">
+    SELECT adminno, id, passwd, auth, act, mdate, tel, name 
+    FROM admin
+    WHERE adminno = #{adminno}
+  </select>
+  <!-- 수정 -->
+  <update id="update" parameterType="AdminVO">
+    UPDATE admin
+    SET id = #{id}
+    WHERE adminno=#{adminno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM admin
+    WHERE adminno = #{adminno}
+  </delete>
+  
+  </mapper>

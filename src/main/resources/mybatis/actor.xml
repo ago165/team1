@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="actor"> <!-- 테이블명 사용 -->
+ <!-- 등록 -->
+ <insert id="create" parameterType="ActorVO">
+ INSERT INTO
+ actor(actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word)
+ VALUES((SELECT NVL(MAX(actorno), 0) +1 as actorno FROM actor), #{actorname}, #{actorbrd},
+             #{thumbs}, #{files}, #{sizes}, #{actor_sang}, #{physical}, #{actorwork}, #{s_word})			
+ </insert>
+ 
+<!-- 목록 -->
+<!--  <select id="list" resultType="ActorVO" parameterType="HashMap">
+    SELECT actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word
+    FROM actor
+    <choose>
+      <when test="s_word == null or s_word == ''"> 검색하지 않는 경우
+      </when>
+      <otherwise>
+        WHERE actorname  LIKE '%' || #{s_word} || '%'  
+      </otherwise>
+    </choose>
+    ORDER BY actorno DESC
+  </select> -->
+
+  <!-- category별 검색된 레코드 갯수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM actor
+    <choose>
+      <when test="s_word == null or s_word == ''"> <!-- 검색하지 않는 경우 -->
+      </when>
+      <otherwise>
+        WHERE actorname LIKE '%' || #{s_word} || '%'    
+      </otherwise>
+    </choose>
+  </select>
+
+ <!-- 목록 -->
+ <select id="list" resultType="ActorVO" parameterType="HashMap">
+    SELECT actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word, r
+    FROM (
+              SELECT actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word, rownum as r
+              FROM (
+                        SELECT actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word
+                        FROM actor
+                        <choose>
+                          <when test="s_word == null or s_word == ''"> <!-- 검색하지 않는 경우 -->                           
+                          </when>
+                          <otherwise>
+                            WHERE actorname LIKE '%' || #{s_word} || '%'    
+                          </otherwise>
+                        </choose>
+                        ORDER BY actorno DESC
+              )            
+    )
+    WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]> 
+    <!--     WHERE r >= #{startNum} AND r <= #{endNum} -->
+    
+  </select>
+
+ 
+ <!-- 조회 -->
+ <select id="read" resultType="ActorVO" parameterType="int">
+ SELECT actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word
+ FROM actor
+ WHERE actorno = #{actorno}
+ </select>
+
+ <update id="update" parameterType="ActorVO">
+  UPDATE actor
+  SET actorname=#{actorname}, actorbrd=#{actorbrd}, thumbs=#{thumbs}, files=#{files}, sizes=#{sizes}, actor_sang=#{actor_sang}
+			,physical=#{physical}, actorwork=#{actorwork}, s_word=#{s_word}
+  WHERE actorno=#{actorno}
+ </update>
+ 
+ <delete id="delete" parameterType="int">
+    DELETE FROM actor
+    WHERE actorno=#{actorno}
+ </delete>
+ 
+   <!-- category별 검색된 레코드 목록 -->
+<!--   <select id="list_by_actor_search" resultType="ActorVO" parameterType="HashMap">
+    SELECT actorno, actorname, actorbrd, thumbs, files, sizes, actor_sang, physical, actorwork, s_word
+    FROM actor
+    <choose>
+      <when test="s_word == null or s_word == ''"> 검색하지 않는 경우
+        WHERE actorno=#{actorno}
+      </when>
+      <otherwise>
+        WHERE actorno=#{actorno} AND s_word LIKE '%' || #{s_word} || '%'  
+      </otherwise>
+    </choose>
+    ORDER BY actorno DESC
+  </select> -->
+ 
+ 
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
