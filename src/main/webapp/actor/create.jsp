@@ -5,7 +5,7 @@
 <head> 
 <meta charset="UTF-8">
 
-<title>배우 등록</title> 
+<title>배우 등록하기</title> 
   <link href="../css/style.css" rel="Stylesheet" type="text/css">
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" type="text/css" href="../css/vendor/bootstrap/css/bootstrap.css">
