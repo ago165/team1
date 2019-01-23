@@ -27,7 +27,7 @@
               <a class="nav-link" href="${pageContext.request.contextPath}/movielook/list.do" style='font-size:15px;'>상영(조원기)</a>
             </li>
              <li class="nav-item">
-              <a class="nav-link" href="#" style='font-size:15px;'>스넥존(남동훈)</a>
+              <a class="nav-link" href="${pageContext.request.contextPath}/snackzone/list.do">스낵존(남동훈)</a>
             </li>
              <li class="nav-item">
               <a class="nav-link" href="#" style='font-size:15px;'>이벤트(안혜인)</a>
