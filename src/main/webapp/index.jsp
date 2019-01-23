@@ -26,6 +26,8 @@
     <div class="container" style="margin: 50px auto;">
 <!--       <br><br> -->
       <!-- Portfolio Item Heading -->
+      <br>
+      <br>
       <h1 class="my-4">1조
         <small>영화 예약시스템</small>
       </h1>
